@@ -112,21 +112,37 @@ export function generateJSON ( sizeReport, config ) {
 	)
 }
 
+async function generateTextSVG ( filePath, scheme, text ) {
+	const svgBitFile = new File( filePath );
+	const fontSize = 14
+	const height = fontSize + 1
+	const width = text.length * fontSize * 0.6 + 1
+	svgBitFile.content( () => [
+		`<svg width="${width}" height="${height}" xmlns="http://www.w3.org/2000/svg">`,
+		`<style> text { fill: ${scheme === "dark" ? "white" : "black" }; font-family: Consolas, Monaco, "Lucida Console", monospace; font-size: ${fontSize}px; }</style>`,
+		`<text y="${height - 1}">${text}</text>`,
+		`</svg>`,
+	].join(""))
+	await svgBitFile.ensureParents()
+	await svgBitFile.save();
+}
+
 export async function generateSVGs ( sizeReport, config ) {
+	let total = 0
 	for ( const bundle of sizeReport ) {
 		const size = bundle.sizes[2]
+		total += size
 		const sizeContent = naiveHumanFileSize( size )
 		for ( const scheme of ["light", "dark"] ) {
-			const bitPath = join( config.cwd, config.reports, `${bundle.name}-${scheme}.svg` )
-			const svgBitFile = new File( bitPath );
-			svgBitFile.content( () => [
-				`<svg width="${sizeContent.length * 10}" height="22" xmlns="http://www.w3.org/2000/svg">`,
-				`<style> text { fill: ${scheme === "dark" ? "white" : "black" }; font-family: 'Segoe UI', 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 14px; }</style>`,
-				`<text y="21">${sizeContent}</text>`,
-				`</svg>`,
-			].join(""))
-			await svgBitFile.ensureParents()
-			await svgBitFile.save();
+			const filePath = join( config.cwd, config.reports, `${bundle.name}-${scheme}.svg` )
+			await generateTextSVG( filePath, scheme, sizeContent )
+		}
+	}
+	if ( sizeReport.length > 1 ) {
+		const sizeContent = naiveHumanFileSize( total )
+		for ( const scheme of ["light", "dark"] ) {
+			const filePath = join( config.cwd, config.reports, `total-${scheme}.svg` )
+			await generateTextSVG( filePath, scheme, sizeContent )
 		}
 	}
 }
