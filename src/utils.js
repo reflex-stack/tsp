@@ -1,4 +1,4 @@
-import { dirname, join } from "node:path";
+import { dirname, join, relative } from "node:path";
 import { fileURLToPath } from "node:url";
 import { existsSync, readFileSync } from "node:fs";
 import { newLine, nicePrint } from "@zouloux/cli";
@@ -58,4 +58,20 @@ export function getGitRemoteUrl ( cwd ) {
   catch {
     return '';
   }
+}
+
+
+export function getGitSubdirectory () {
+    let currentDir = process.cwd()
+    let rootDir = null
+    while ( currentDir !== '/' ) {
+        if ( existsSync(join(currentDir, '.git')) ) {
+            rootDir = currentDir
+            break
+        }
+        currentDir = dirname(currentDir)
+    }
+    if ( !rootDir )
+			return null
+    return relative(rootDir, process.cwd())
 }

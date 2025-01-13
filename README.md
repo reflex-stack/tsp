@@ -2,11 +2,16 @@
 
 **TypeScript Package** (tsp), scaffolds and build **Typescript** sources to **EcmaScript modules** and publish them as modular packages to **NPM** or **JSR**.
 
-Features :
+**Features :**
 - It uses `tsc` to compile from ts to js and check errors
+- Generates `.d.ts` to keep types when used
 - Scaffold new packages in 1 minute
 - Testing lib pre-installed, can also use your own or skip tests
-- 
+- Generating size report as SVG for **README.md** inclusion ( ex : <picture style="display: inline-block"><source media="(prefers-color-scheme: dark)" srcset="./tests/example-package/reports/main-dark.svg"><img src="./tests/example-package/reports/main-light.svg"></picture> ) 
+- Compatible with latest **Node** / **Bun** / **Deno** and all bundlers with ecma specification
+- Publishing under `.js` and `.d.ts` helps having better performances in your projects ( typescript is faster ), event if **Bun** or **Deno** support Typescript by default.
+
+Check example on [NPM](https://www.npmjs.com/package/@reflex-stack/tsp-example) and [GitHub](https://github.com/reflex-stack/tsp/tree/main/tests/example-package)
 
 ## Init a new TypeScript Package
 
@@ -29,7 +34,7 @@ This will ask some questions and create those files. It contains 1 **submodule**
 │  └─ index.ts
 ├─ tests/
 │  └─ test.js
-│  └─ tsconfig.json
+│  └─ tsconfig.json ( to have correct typings in test.js )
 ├─ .gitignore
 ├─ .npmignore
 ├─ LICENCE ( if MIT )
@@ -61,8 +66,17 @@ npm run build
 
 
 ## Size report
-- TODO SVG doc
-- TODO JSON doc
+
+**TSP** can generate size reports with brotli compression. It generate :
+- 2 svgs for root module
+- 2 svgs by submodule
+- 2 svgs for total if you have submodules
+
+There are 2 svgs generated, for dark and light mode, to be included in the README.md, on **GitHub** and **NPM**.
+
+> When scaffolded, an example of SVG inclusion is generated in README.md
+
+**TSP** can also generate a json size report if needed ( default is set to false )
 
 ## TSP config
 TSP config is in the generated `package.json` under the `"tsp"` node
@@ -88,4 +102,4 @@ TSP config is in the generated `package.json` under the `"tsp"` node
 ```
 
 ## Next features
-- docisfy integration
+- [ ] docisfy integration

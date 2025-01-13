@@ -1,6 +1,6 @@
 import { nicePrint, askInput, askList, newLine, oraTask, execAsync } from "@zouloux/cli"
 import { getConfig } from "../config.js";
-import { getGitRemoteUrl, getTSPPackageJson } from "../utils.js";
+import { getGitRemoteUrl, getGitSubdirectory, getTSPPackageJson } from "../utils.js";
 import { existsSync, writeFileSync } from "node:fs";
 import { Stach } from "stach";
 import { mkdirSync } from "fs";
@@ -29,16 +29,8 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.`
 
 const readmeTemplate = `# {{ packageTextName }}
-Main bundle is
-<picture style="display: inline-block">
-  <source media="(prefers-color-scheme: dark)" srcset="./reports/main-dark.svg">
-  <img src="./reports/main-light.svg">
-</picture>
-Optional submodule is only
-<picture style="display: inline-block">
-  <source media="(prefers-color-scheme: dark)" srcset="./reports/submodule-dark.svg">
-  <img src="./reports/submodule-light.svg">
-</picture>
+Main bundle is <picture style="display: inline-block"><source media="(prefers-color-scheme: dark)" srcset="./reports/main-dark.svg"><img src="./reports/main-light.svg"></picture>
+and optional submodule is only <picture style="display: inline-block"><source media="(prefers-color-scheme: dark)" srcset="./reports/submodule-dark.svg"><img src="./reports/submodule-light.svg"></picture>
 
 ## Install
 
@@ -52,7 +44,7 @@ Optional submodule is only
 ##### Sub module
 - \`import { ... } from "{{ packageNPMName }}/submodule"\`
 
-## tsp commands
+## Build commands
 
 ##### Build
 - \`npm run build\`
@@ -60,6 +52,10 @@ Optional submodule is only
 - \`npm run test\`
 ##### Publish
 - \`npm run publish\`
+
+---
+## TSP
+This package has been created with [tsp](https://github.com/reflex-stack/tsp)
 `
 
 const tsconfigTemplate = `{
@@ -181,13 +177,19 @@ export async function init () {
 	}
 	// Get git remote
 	const config = getConfig()
-	let remoteURL = getGitRemoteUrl( config.cwd )
-	if ( !remoteURL )
-		nicePrint(`{o}Before scaffolding your TypeScript package, you should create the associated git repository.`)
-	else
+	const remoteURL = getGitRemoteUrl( config.cwd )
+	const relativeGitSubDirectory = getGitSubdirectory()
+	if ( !remoteURL ) {
+		nicePrint(`{o}Before scaffolding your TypeScript package, you should create the associated git repository, and cd in the correct sub-directory.`)
+	}
+	else {
 		nicePrint(`{d}Git origin is {/}${remoteURL}`)
+		if ( relativeGitSubDirectory ) {
+			nicePrint(`{d}Git sub directory is {/}${relativeGitSubDirectory}. This will be saved to package.json.`)
+		}
+	}
 	newLine()
-	const options = { remoteURL }
+	const options = { remoteURL, relativeGitSubDirectory }
 	options.packageTextName = await askInput(`Package name, in plain text {d}ex : My Package`, { notEmpty: true })
 	options.packageNPMName = await askInput(`Package name, for NPM, with namespace {d}ex : @mynamespace/mypackage`, { notEmpty: true })
 	options.authorName = await askInput(`Author name`, { notEmpty: true })
@@ -249,6 +251,10 @@ export async function init () {
 		packageJson.repository = {
 			type: "git",
 			url: options.remoteURL
+		}
+		// Add subdirectory for package.json and SVG targeting in README.md on NPMJs
+		if ( options.relativeGitSubDirectory ) {
+			packageJson.repository.directory = options.relativeGitSubDirectory
 		}
 	}
 	// Create directories
