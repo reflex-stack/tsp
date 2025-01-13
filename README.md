@@ -9,7 +9,7 @@
 - Testing lib pre-installed, can also use your own or skip tests
 - Generating size report as SVG for **README.md** inclusion ( ex : <picture style="display: inline-block"><source media="(prefers-color-scheme: dark)" srcset="./tests/example-package/reports/main-dark.svg"><img src="./tests/example-package/reports/main-light.svg"></picture> ) 
 - Compatible with latest **Node** / **Bun** / **Deno** and all bundlers with ecma specification
-- Publishing under `.js` and `.d.ts` helps having better performances in your projects ( typescript is faster ), event if **Bun** or **Deno** support Typescript by default.
+- Publishing under `.js` and `.d.ts` [helps having better performances](https://x.com/mattpocockuk/status/1872945584761651432) in your projects ( typescript is faster ), event if **Bun** or **Deno** support Typescript by default.
 
 Check example on [NPM](https://www.npmjs.com/package/@reflex-stack/tsp-example) and [GitHub](https://github.com/reflex-stack/tsp/tree/main/tests/example-package)
 
