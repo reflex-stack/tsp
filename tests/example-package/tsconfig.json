@@ -1,0 +1,18 @@
+{
+	"compilerOptions": {
+		// Input and output
+		"allowJs": false,
+		// Compiler options
+		"strict": false,
+		//
+		"target" : "ES2023",
+		"lib": ["DOM", "ES2023"],
+		//
+		"module": "NodeNext",
+		"isolatedModules": false,
+		"allowImportingTsExtensions": false,
+		//
+		"useDefineForClassFields" : true,
+		"allowSyntheticDefaultImports": true,
+	}
+}

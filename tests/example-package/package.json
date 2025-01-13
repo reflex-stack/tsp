@@ -1,0 +1,35 @@
+{
+  "name": "@reflex-stack/tsp-example-package",
+  "version": "0.1.0",
+  "author": "Alexis Bouhet",
+  "license": "MIT",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./submodule": {
+      "types": "./dist/submodule/index.d.ts",
+      "default": "./dist/submodule/index.js"
+    }
+  },
+  "tsp": {
+    "src": "./src",
+    "dist": "./dist",
+    "tmp": "./tmp",
+    "reports": "./reports",
+    "generate-json-report": false,
+    "generate-svg-report": true
+  },
+  "scripts": {
+    "build": "tsp build",
+    "test": "tsp build --noSizeReport && tsp test --noIntro",
+    "publish": "tsp build && tsp test --noIntro && tsp publish --noIntro"
+  },
+  "dependencies": {
+    "@reflex-stack/tsp": "0.1.0"
+  }
+}

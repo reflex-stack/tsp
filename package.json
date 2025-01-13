@@ -1,0 +1,23 @@
+{
+  "name": "@reflex-stack/tsp",
+  "version": "0.1.0",
+  "type": "module",
+  "bin": {
+    "tsp": "./src/cli.js"
+  },
+  "scripts": {
+    "publish": "node ./src/cli.js publish"
+  },
+  "author": "Alexis Bouhet",
+  "license": "MIT",
+  "description": "",
+  "dependencies": {
+    "@types/node": "^22.10.2",
+    "@zouloux/cli": "^0.2.8",
+    "@zouloux/files": "^3.0.4",
+    "brotli-size": "^4.0.0",
+    "stach": "^2.0.1",
+    "terser": "^5.37.0",
+    "typescript": "^5.7.2"
+  }
+}
