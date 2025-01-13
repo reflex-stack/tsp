@@ -1,15 +1,12 @@
 #!/usr/bin/env sh
 ':' //# comment; exec /usr/bin/env "${RUNTIME:-node}" "$0" "$@"
 
-
 import { askInput, CLICommands, execAsync, nicePrint, oraTask, execSync, table, askList, newLine } from "@zouloux/cli";
 import { build, clearOutput } from "./commands/build.js";
 import { getUserPackageJson, naiveHumanFileSize, showIntroMessage } from "./utils.js";
 import { cleanSizeReports, generateJSON, generateSVGs, sizeReport } from "./commands/size-report.js";
 import { init } from "./commands/init.js";
 import { getConfig } from "./config.js";
-import { test } from "./commands/test.js";
-
 
 // ----------------------------------------------------------------------------- COMMANDS
 
@@ -142,9 +139,25 @@ commands.add("test", async (args, flags, commandName) => {
 	const userPackage = getUserPackageJson()
 	const config = getConfig(userPackage)
 
-	await test( config )
+	nicePrint(`Starting test sequence`)
+	newLine()
+	for ( const testFile of config["test-files"] ) {
+		const command = `${config.runtime} ${config.tests}/${testFile}`
+		nicePrint(`{d}$ ${command}`)
+		try {
+			await execAsync(command, 3)
+		}
+		catch ( error ) {
+			nicePrint(`{b/r}Test ${testFile} failed`, { code: 2 })
+		}
+		newLine()
+	}
+	await oraTask(`All tests passed`, (t) => {t.success()})
 })
 
+/**
+ * PUBLISH COMMAND
+ */
 commands.add("publish", async (args, flags, commandName) => {
 	// Check NPM connected user
 	await oraTask({text: `Connecting to npm`}, async task => {
@@ -215,6 +228,10 @@ commands.add("publish", async (args, flags, commandName) => {
 	}
 })
 
+
+/**
+ * START
+ */
 commands.start(function (commandName) {
 	if ( commandName )
 		return

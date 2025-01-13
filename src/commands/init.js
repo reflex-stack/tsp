@@ -67,6 +67,9 @@ const tsconfigTemplate = `{
 		// Compilation level target
 		// If using a bundler in your project it should be the previous or current year
 		"target" : "{{esLevel}}",
+		// Allow types to be resolved in tests
+		"checkJs": true,
+		"allowJs": true,
 		// TS libs used, include needed lib.
 		// It should contain the target and "DOM" if it runs in the browser
 		// https://www.typescriptlang.org/tsconfig/#lib
@@ -77,7 +80,7 @@ const tsconfigTemplate = `{
 		"allowImportingTsExtensions": false,
 		// Compiler config
 		"strict": {{tsStrict}},
-		"allowJs": false,
+		"checkJs": true,
 		"useDefineForClassFields" : true,
 		"allowSyntheticDefaultImports": true,
 		// ---
@@ -90,9 +93,17 @@ const tsconfigTemplate = `{
 		// - declaration
 		// - noEmitOnError
 		// - pretty
-	}
-}
-`
+	},
+	// Compile only from src, avoid looping in dist
+	"exclude": ["node_modules", "dist"],
+	"include": ["src/**/*"],
+}`
+
+const tsconfigTestTemplate = `{
+	"extends": "../tsconfig.json",
+	"exclude": ["../node_modules", "../dist", "../src"],
+	"include": ["./**/*"]
+}`
 
 const gitIgnoreTemplate = `.DS_Store
 .idea
@@ -127,9 +138,37 @@ export function subRandomFunction () {
 }
 `
 
-const testFile = `// Write your test file here
-console.log("No test implemented yet")
-process.exit(0)
+const testFile = `// If you have no tests, uncomment this
+// console.log("No test implemented.")
+// process.exit(0)
+
+// Import your code from dist directory, tests are not built on purpose
+import { randomFunction } from "../dist/index.js"
+import { subRandomFunction } from "../dist/submodule/index.js"
+// Import small testing lib from tsp
+import { describe, it, expect, startTest } from "@reflex-stack/tsp/tests"
+
+const endTest = startTest()
+
+describe("Main module", () => {
+	it("Should call random", () => {
+		const rootResult = randomFunction()
+		expect(rootResult).toBe(5)
+	})
+})
+
+describe("Sub module", () => {
+	it("Should call sub random", () => {
+		const rootResult = subRandomFunction()
+		expect(rootResult).toBe(60)
+	})
+	// Test error example
+	// it("Should fail", () => {
+	// 	expect(5).toBe(12)
+	// })
+})
+
+endTest()
 `
 
 export async function init () {
@@ -227,8 +266,9 @@ export async function init () {
 	// Generate src files
 	writeFileSync(join(config.src, "index.ts"), Stach(rootIndexTs, options))
 	writeFileSync(join(config.src, "submodule", "index.ts"), Stach(subModuleIndexTs, options))
-	// Generate test file
+	// Generate tests file
 	writeFileSync(join(config.tests, "test.js"), Stach(testFile, options))
+	writeFileSync(join(config.tests, "tsconfig.json"), Stach(tsconfigTestTemplate, options))
 	// Install dependencies
 	await oraTask("Installing dependencies", async () => {
 		await execAsync(`npm i typescript terser`, false, { cwd: config.cwd })

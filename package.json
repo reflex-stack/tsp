@@ -1,16 +1,23 @@
 {
   "name": "@reflex-stack/tsp",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "type": "module",
   "bin": {
     "tsp": "./src/cli.js"
+  },
+  "exports": {
+    ".": "./src/cli.js",
+    "./build": "./src/commands/build.js",
+    "./init": "./src/commands/init.js",
+    "./size-report": "./src/commands/size-report.js",
+    "./tests": "./src/tests.js"
   },
   "scripts": {
     "publish": "node ./src/cli.js publish"
   },
   "author": "Alexis Bouhet",
   "license": "MIT",
-  "description": "",
+  "description": "TSP scaffolds and build Typescript sources to EcmaScript modules and publish them as modular packages to NPM",
   "dependencies": {
     "@types/node": "^22.10.2",
     "@zouloux/cli": "^0.2.8",
