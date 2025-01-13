@@ -38,5 +38,10 @@
     "@reflex-stack/tsp": "0.1.2",
     "terser": "^5.37.0",
     "typescript": "^5.7.3"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:reflex-stack/tsp.git",
+    "directory": "tests/example-package"
   }
 }
