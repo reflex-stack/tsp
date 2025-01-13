@@ -1,4 +1,7 @@
-.idea
 .DS_Store
-src
-tmp
+.idea
+LICENCE
+tmp/
+src/
+.github/
+docs/

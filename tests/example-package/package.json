@@ -1,11 +1,11 @@
 {
-  "name": "@reflex-stack/tsp-example-package",
+  "name": "@reflex-stack/tsp-example",
   "version": "0.1.0",
+  "type": "module",
   "author": "Alexis Bouhet",
-  "license": "MIT",
+  "licence": "MIT",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
-  "type": "module",
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
@@ -17,8 +17,13 @@
     }
   },
   "tsp": {
+    "runtime": "node",
     "src": "./src",
     "dist": "./dist",
+    "tests": "./tests",
+    "test-files": [
+      "test.js"
+    ],
     "tmp": "./tmp",
     "reports": "./reports",
     "generate-json-report": false,
@@ -30,6 +35,12 @@
     "publish": "tsp build && tsp test --noIntro && tsp publish --noIntro"
   },
   "dependencies": {
-    "@reflex-stack/tsp": "0.1.0"
+    "@reflex-stack/tsp": "0.1.2",
+    "terser": "^5.37.0",
+    "typescript": "^5.7.3"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:reflex-stack/tsp.git"
   }
 }

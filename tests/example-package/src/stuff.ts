@@ -2,5 +2,6 @@ import { commonDep } from "./common-dep.js";
 
 
 export function doStuff () {
-	console.log("Do stuff", commonDep)
+	console.log("DO STUFFF")
+	return `Do stuff ${commonDep}`
 }

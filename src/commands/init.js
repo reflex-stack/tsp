@@ -159,8 +159,8 @@ describe("Main module", () => {
 
 describe("Sub module", () => {
 	it("Should call sub random", () => {
-		const rootResult = subRandomFunction()
-		expect(rootResult).toBe(60)
+		const subResult = subRandomFunction()
+		expect(subResult).toBe(60)
 	})
 	// Test error example
 	// it("Should fail", () => {

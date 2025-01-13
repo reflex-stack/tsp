@@ -1,17 +1,25 @@
-# TypeScript Package (TSP)
+# TypeScript Package (tsp)
 
 **TypeScript Package** (tsp), scaffolds and build **Typescript** sources to **EcmaScript modules** and publish them as modular packages to **NPM** or **JSR**.
 
-## Init a new library
+Features :
+- It uses `tsc` to compile from ts to js and check errors
+- Scaffold new packages in 1 minute
+- Testing lib pre-installed, can also use your own or skip tests
+- 
 
-First, create the associated **git repository** and clone it.
+## Init a new TypeScript Package
 
-Run this command in git trunk :
+First, create the associated **git repository** and clone it ( optional ).
+
+Then, run this command the cloned directory :
 ```bash
 npx @reflex-stack/tsp init
 ```
 
-## Created files
+#### Created files
+
+This will ask some questions and create those files. It contains 1 **submodule** example and a simple test implementation.
 
 ```
 ├─ dist/
@@ -21,6 +29,7 @@ npx @reflex-stack/tsp init
 │  └─ index.ts
 ├─ tests/
 │  └─ test.js
+│  └─ tsconfig.json
 ├─ .gitignore
 ├─ .npmignore
 ├─ LICENCE ( if MIT )
@@ -55,11 +64,28 @@ npm run build
 - TODO SVG doc
 - TODO JSON doc
 
-## tsconfig
-- TODO doc, explain forbidden properties
-
 ## TSP config
-- TODO tsp config
+TSP config is in the generated `package.json` under the `"tsp"` node
 
-## Next
-- TODO config override from package
+```json5
+{
+  "tsp": {
+	// Can set to "bun" or "deno" 
+	"runtime": "node",
+	// If you change them, you should update tsconfig.json file
+	"src": './src',
+	"dist": './dist',
+	"tests": './tests',
+	"tmp": './tmp',
+	// Add your test files here
+	"test-files": ['test.js'],
+	// Where size reports are generated
+	"reports": './reports',
+	"generate-json-report": false,
+	"generate-svg-report": true
+  },
+}
+```
+
+## Next features
+- docisfy integration
