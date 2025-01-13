@@ -1,4 +1,4 @@
-# TSP
+# TypeScript Package (TSP)
 
 **TypeScript Package** (tsp), scaffolds and build **Typescript** sources to **EcmaScript modules** and publish them as modular packages to **NPM** or **JSR**.
 
