@@ -92,9 +92,9 @@ total is <picture style="display: inline-block"><source media="(prefers-color-sc
 
 Which renders to 
 
-Main bundle is <picture style="display: inline-block"><source media="(prefers-color-scheme: dark)" srcset="./reports/main-dark.svg"><img src="./reports/main-light.svg"></picture>,
-submodule is <picture style="display: inline-block"><source media="(prefers-color-scheme: dark)" srcset="./reports/submodule-dark.svg"><img src="./reports/submodule-light.svg"></picture>,
-total is <picture style="display: inline-block"><source media="(prefers-color-scheme: dark)" srcset="./reports/total-dark.svg"><img src="./reports/total-light.svg"></picture>
+Main bundle is <picture style="display: inline-block"><source media="(prefers-color-scheme: dark)" srcset="./tests/example-package/reports/main-dark.svg"><img src="./tests/example-package/reports/main-light.svg"></picture>,
+submodule is <picture style="display: inline-block"><source media="(prefers-color-scheme: dark)" srcset="./tests/example-package/reports/submodule-dark.svg"><img src="./tests/example-package/reports/submodule-light.svg"></picture>,
+total is <picture style="display: inline-block"><source media="(prefers-color-scheme: dark)" srcset="./tests/example-package/reports/total-dark.svg"><img src="./tests/example-package/reports/total-light.svg"></picture>
 
 > Those works in GitHub and NPM.
 > This can be disabled in package.json at `tsp.generate-svg-report`
