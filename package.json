@@ -1,6 +1,6 @@
 {
 	"name": "@reflex-stack/tsp",
-	"version": "0.1.4",
+	"version": "0.1.5",
 	"type": "module",
 	"bin": {
 		"tsp": "./src/cli.js"
