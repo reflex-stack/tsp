@@ -15,12 +15,14 @@ Check example on [NPM](https://www.npmjs.com/package/@reflex-stack/tsp-example) 
 
 ## Init a new TypeScript Package
 
-First, create the associated **git repository** and clone it ( optional ).
+First, create the associated **git repository** for your package and clone it ( optional ).
 
-Then, run this command the cloned directory :
+Then, run this command in the cloned directory. :
 ```bash
 npx @reflex-stack/tsp init
 ```
+
+> If you create this package in a mono-repo, `cd` in the correct repository before running this command. The subdirectory is important for package.json and size report generation. 
 
 #### Created files
 
@@ -53,15 +55,19 @@ npm run build
 - Will clear `./dist`, build sources from `.ts` files to `.js` and `.d.ts` files.
 - Will generate size report and generate `./reports` directory with JSON and SVG files.
 
-> Run `npm run build --noSizeReport`
+> Run `npm run build --noSizeReport` to skip size report entirely.
 
 #### Test
-- `npm run test`
+```bash
+npm run test
+```
 > Will clear `./dist`, build sources and run tests. No size report.
 
 #### Publish
-- `npm run publish`
-> Will clear `./dist`, build sources and run tests, and start publish process.
+```bash
+npm run publish
+```
+> Will clear `./dist`, build sources, run tests, and start publish process.
 > This will ask you how to upgrade package.json version, push to git and npm.
 
 
@@ -75,6 +81,16 @@ npm run build
 There are 2 svgs generated, for dark and light mode, to be included in the README.md, on **GitHub** and **NPM**.
 
 > When scaffolded, an example of SVG inclusion is generated in README.md
+
+How to include the size report in `README.md` ?
+
+```html
+Main bundle is <picture style="display: inline-block"><source media="(prefers-color-scheme: dark)" srcset="./reports/main-dark.svg"><img src="./reports/main-light.svg"></picture>
+Submodule is <picture style="display: inline-block"><source media="(prefers-color-scheme: dark)" srcset="./reports/submodule-dark.svg"><img src="./reports/submodule-light.svg"></picture>
+Total is <picture style="display: inline-block"><source media="(prefers-color-scheme: dark)" srcset="./reports/total-dark.svg"><img src="./reports/total-light.svg"></picture>
+```
+
+> Those works in GitHub and NPM
 
 **TSP** can also generate a json size report if needed ( default is set to false )
 
