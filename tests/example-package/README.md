@@ -1,17 +1,7 @@
 # TSP Example
-Main bundle is
+Main bundle is <picture style="display: inline-block"><source media="(prefers-color-scheme: dark)" srcset="./reports/main-dark.svg"><img src="./reports/main-light.svg"></picture>
 
-<picture style="display: inline-block">
-  <source media="(prefers-color-scheme: dark)" srcset="./reports/main-dark.svg">
-  <img src="./reports/main-light.svg">
-</picture>
-
-Optional submodule is only
-
-<picture style="display: inline-block">
-  <source media="(prefers-color-scheme: dark)" srcset="./reports/submodule-dark.svg">
-  <img src="./reports/submodule-light.svg">
-</picture>
+Optional submodule is only <picture style="display: inline-block"><source media="(prefers-color-scheme: dark)" srcset="./reports/submodule-dark.svg"><img src="./reports/submodule-light.svg"></picture>
 
 ## Install
 
