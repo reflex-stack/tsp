@@ -72,11 +72,11 @@ const tsconfigTemplate = `{
 		"lib": [{{libs}}],
 		// Module config, you should not change it
 		"module": "NodeNext",
+		"moduleResolution": "node",
 		"isolatedModules": false,
 		"allowImportingTsExtensions": false,
 		// Compiler config
 		"strict": {{tsStrict}},
-		"checkJs": true,
 		"useDefineForClassFields" : true,
 		"allowSyntheticDefaultImports": true,
 		// ---
