@@ -72,13 +72,14 @@ const tsconfigTemplate = `{
 		"lib": [{{libs}}],
 		// Module config, you should not change it
 		"module": "NodeNext",
-		"moduleResolution": "node",
+		"moduleResolution": "NodeNext",
 		"isolatedModules": false,
 		"allowImportingTsExtensions": false,
 		// Compiler config
 		"strict": {{tsStrict}},
 		"useDefineForClassFields" : true,
 		"allowSyntheticDefaultImports": true,
+		"skipLibCheck": true,
 		// ---
 		// Feel free to configure this file for your needs
 		// https://www.typescriptlang.org/tsconfig/
