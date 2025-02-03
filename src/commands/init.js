@@ -195,7 +195,7 @@ export async function init () {
 	options.authorName = await askInput(`Author name`, { notEmpty: true })
 	options.licenseName = await askInput(`License name`, { defaultValue: "MIT" })
 	options.esLevel = await askInput(`ES Level for tsconfig`, { defaultValue: "es2023" })
-	options.tsStrict = await askList(`Use strict Typescript?`, ["Yes", "No"], { defaultIndex: 1, returnType: "index" })
+	options.tsStrict = await askList(`Use strict Typescript?`, ["Yes", "No"], { defaultIndex: 0, returnType: "index" })
 	options.domAccess = await askList(`Will it have access to DOM?`, ["Yes", "No"], { defaultIndex: 0, returnType: "index" })
 	options.svgReport = await askList(`Export SVG size report on build for README.md?`, ["Yes", "No"], { defaultIndex: 0, returnType: "index" })
 	options.jsonReport = await askList(`Export JSON size report on build?`, ["Yes", "No"], { defaultIndex: 1, returnType: "index" })
