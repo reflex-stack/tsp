@@ -39,7 +39,7 @@ This will ask some questions and create those files. It contains 1 **submodule**
 │  └─ tsconfig.json ( to have correct typings in test.js )
 ├─ .gitignore
 ├─ .npmignore
-├─ LICENCE ( if MIT )
+├─ LICENSE ( if MIT )
 ├─ package.json
 ├─ package-lock.json
 ├─ README.md

@@ -6,9 +6,9 @@ import { Stach } from "stach";
 import { mkdirSync } from "fs";
 import { join } from "node:path";
 
-const licenceTemplate = `MIT License
+const licenseTemplate = `MIT License
 
-Copyright (c) 2022 {{ authorName }}
+Copyright (c) {{ year }} {{ authorName }}
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -110,7 +110,7 @@ dist
 
 const npmIgnoreTemplate = `.DS_Store
 .idea
-LICENCE
+LICENSE
 tmp/
 src/
 .github/
@@ -193,7 +193,7 @@ export async function init () {
 	options.packageTextName = await askInput(`Package name, in plain text {d}ex : My Package`, { notEmpty: true })
 	options.packageNPMName = await askInput(`Package name, for NPM, with namespace {d}ex : @mynamespace/mypackage`, { notEmpty: true })
 	options.authorName = await askInput(`Author name`, { notEmpty: true })
-	options.licenceName = await askInput(`Licence name`, { defaultValue: "MIT" })
+	options.licenseName = await askInput(`License name`, { defaultValue: "MIT" })
 	options.esLevel = await askInput(`ES Level for tsconfig`, { defaultValue: "es2023" })
 	options.tsStrict = await askList(`Use strict Typescript?`, ["Yes", "No"], { defaultIndex: 1, returnType: "index" })
 	options.domAccess = await askList(`Will it have access to DOM?`, ["Yes", "No"], { defaultIndex: 0, returnType: "index" })
@@ -213,7 +213,7 @@ export async function init () {
 		version: "0.1.0",
 		type: "module",
 		author: options.authorName,
-		licence: options.licenceName,
+		license: options.licenseName,
 		main: "./dist/index.js",
 		types: "./dist/index.d.ts",
 		exports: {
@@ -257,13 +257,15 @@ export async function init () {
 			packageJson.repository.directory = options.relativeGitSubDirectory
 		}
 	}
+	// Inject year
+	options.year = new Date().getFullYear()
 	// Create directories
 	mkdirSync(config.tests, { recursive: true })
 	mkdirSync(config.dist, { recursive: true })
 	mkdirSync(join(config.src, "submodule"), { recursive: true })
 	// Generate root files
-	if ( options.licenceName === "MIT" )
-		writeFileSync("LICENCE", Stach(licenceTemplate, options))
+	if ( options.licenseName === "MIT" )
+		writeFileSync("LICENSE", Stach(licenseTemplate, options))
 	writeFileSync("README.md", Stach(readmeTemplate, options))
 	writeFileSync(".gitignore", Stach(gitIgnoreTemplate, options))
 	writeFileSync(".npmignore", Stach(npmIgnoreTemplate, options))
