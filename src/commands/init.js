@@ -6,6 +6,9 @@ import { Stach } from "stach";
 import { mkdirSync } from "fs";
 import { join } from "node:path";
 
+const runtime = typeof Bun === "undefined" ? "node" : "bun"
+const packageManager = runtime === "node" ? "npm" : "bun"
+
 const licenseTemplate = `MIT License
 
 Copyright (c) {{ year }} {{ authorName }}
@@ -29,12 +32,13 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.`
 
 const readmeTemplate = `# {{ packageTextName }}
-Main bundle is <picture style="display: inline-block"><source media="(prefers-color-scheme: dark)" srcset="./reports/main-dark.svg"><img src="./reports/main-light.svg"></picture>
-and optional submodule is only <picture style="display: inline-block"><source media="(prefers-color-scheme: dark)" srcset="./reports/submodule-dark.svg"><img src="./reports/submodule-light.svg"></picture>
+Main bundle is <bundle-size id="main">0b</bundle-size>
+and optional submodule is only <bundle-size id="submodule">0b</bundle-size>.
+For a total of <bundle-size id="total">0b</bundle-size>
 
 ## Install
 
-\`npm i {{ packageNPMName }}\`
+\`${packageManager} i {{ packageNPMName }}\`
 
 ## Usage
 
@@ -47,11 +51,11 @@ and optional submodule is only <picture style="display: inline-block"><source me
 ## Build commands
 
 ##### Build
-- \`npm run build\`
+- \`${runtime} run build\`
 ##### Test
-- \`npm run test\`
+- \`${runtime} run test\`
 ##### Publish
-- \`npm run publish\`
+- \`${runtime} run publish\`
 
 ---
 ## TSP
@@ -104,6 +108,7 @@ const tsconfigTestTemplate = `{
 
 const gitIgnoreTemplate = `.DS_Store
 .idea
+.vscode
 tmp
 node_modules
 dist
@@ -111,6 +116,7 @@ dist
 
 const npmIgnoreTemplate = `.DS_Store
 .idea
+.vscode
 LICENSE
 tmp/
 src/
@@ -195,14 +201,12 @@ export async function init () {
 	options.packageNPMName = await askInput(`Package name, for NPM, with namespace {d}ex : @mynamespace/mypackage`, { notEmpty: true })
 	options.authorName = await askInput(`Author name`, { notEmpty: true })
 	options.licenseName = await askInput(`License name`, { defaultValue: "MIT" })
-	options.esLevel = await askInput(`ES Level for tsconfig`, { defaultValue: "es2023" })
+	options.esLevel = await askInput(`ES Level for tsconfig`, { defaultValue: "es2024" })
 	options.tsStrict = await askList(`Use strict Typescript?`, ["Yes", "No"], { defaultIndex: 0, returnType: "index" })
 	options.domAccess = await askList(`Will it have access to DOM?`, ["Yes", "No"], { defaultIndex: 0, returnType: "index" })
-	options.svgReport = await askList(`Export SVG size report on build for README.md?`, ["Yes", "No"], { defaultIndex: 0, returnType: "index" })
 	options.jsonReport = await askList(`Export JSON size report on build?`, ["Yes", "No"], { defaultIndex: 1, returnType: "index" })
 	options.domAccess = options.domAccess === 0
 	options.tsStrict = options.tsStrict === 0
-	options.svgReport = options.svgReport === 0
 	options.jsonReport = options.jsonReport === 0
 	options.libs = [options.domAccess ? "DOM" : "", options.esLevel]
 		.filter( Boolean )
@@ -228,15 +232,13 @@ export async function init () {
 			}
 		},
 		tsp: {
-			runtime: "node",
+			runtime,
 			src: './src',
 			dist: './dist',
 			tests: './tests',
 			"test-files": ['test.js'],
 			tmp: './tmp',
-			reports: './reports',
-			"generate-json-report": options.jsonReport,
-			"generate-svg-report": options.svgReport
+			"generate-json-report": options.jsonReport
 		},
 		scripts: {
 			build: "tsp build",
@@ -287,8 +289,8 @@ export async function init () {
 	nicePrint(`{b/g}Package ${options.packageNPMName} created ✨`)
 	newLine()
 	nicePrint(`Available commands :`)
-	nicePrint(`- npm run build`)
-	nicePrint(`- npm run test`)
-	nicePrint(`- npm run publish`)
+	nicePrint(`- ${packageManager} run build`)
+	nicePrint(`- ${packageManager} run test`)
+	nicePrint(`- ${packageManager} run publish`)
 	newLine()
 }

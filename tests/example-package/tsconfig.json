@@ -2,14 +2,14 @@
 	"compilerOptions": {
 		// Compilation level target
 		// If using a bundler in your project it should be the previous or current year
-		"target" : "es2023",
+		"target" : "es2024",
 		// Allow types to be resolved in tests
 		"checkJs": true,
 		"allowJs": true,
 		// TS libs used, include needed lib.
 		// It should contain the target and "DOM" if it runs in the browser
 		// https://www.typescriptlang.org/tsconfig/#lib
-		"lib": ["es2023"],
+		"lib": ["es2024"],
 		// Module config, you should not change it
 		"module": "NodeNext",
 		"isolatedModules": false,

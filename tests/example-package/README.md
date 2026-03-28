@@ -2,9 +2,9 @@
 
 ## This is a test package for @reflex-stack/tsp, do not use it
 
-Main bundle is <bundle-size id="main">248</bundle-size>
-and optional submodule is only <bundle-size id="submodule">144</bundle-size>
-For a total of <bundle-size id="total">144</bundle-size>
+Main bundle is <bundle-size id="main">259b</bundle-size>
+and optional submodule is only <bundle-size id="submodule">144b</bundle-size>
+For a total of <bundle-size id="total">403b</bundle-size>
 
 ## Install
 

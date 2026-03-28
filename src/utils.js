@@ -45,9 +45,11 @@ export function showIntroMessage ( noThrow = false ) {
  * Very naive implementation.
  */
 export function naiveHumanFileSize ( size ) {
-  if ( size > 1000 ) // is it base 10 or ^2 ?
-    size = ~~(size / 10) / 100 + 'k'
-  return size + 'b'
+	if ( size >= 1000000 )
+		size = ~~( size / 10000 ) / 100 + 'mb'
+	else if ( size >= 1000 )
+		size = ~~( size / 10 ) / 100 + 'kb'
+	return size + 'b'
 }
 
 // Get git remote repo URL if in a git repo

@@ -4,7 +4,7 @@
 import { askInput, CLICommands, execAsync, nicePrint, oraTask, execSync, table, askList, newLine } from "@zouloux/cli";
 import { build, clearOutput } from "./commands/build.js";
 import { getUserPackageJson, naiveHumanFileSize, showIntroMessage } from "./utils.js";
-import { cleanSizeReports, generateJSON, generateSVGs, sizeReport } from "./commands/size-report.js";
+import { generateJSON, replaceBundleSizes, sizeReport } from "./commands/size-report.js";
 import { init } from "./commands/init.js";
 import { getConfig } from "./config.js";
 
@@ -68,19 +68,17 @@ commands.add("build", async (args, flags) => {
 		return report
 	})
 
-	// Generate
-	if ( config["generate-svg-report"] || config["generate-json-report"] ) {
-		await oraTask('Generating report files', async ( task ) => {
-			// Clean report directory
-			await cleanSizeReports( config )
-			// Generate JSON
-			if ( config["generate-json-report"] )
-				generateJSON( report, config )
-			// Generate SVG files
-			if ( config["generate-svg-report"] )
-				await generateSVGs( report, config )
+	// Generate JSON report
+	if ( config["generate-json-report"] ) {
+		await oraTask('Generating json report', async ( task ) => {
+			generateJSON( report, config )
 		})
 	}
+
+	// Replace bundle sizes
+	await oraTask('Replacing bundle sizes', async ( task ) => {
+		await replaceBundleSizes( report, config )
+	})
 
 	// Print report table in CLI
 	const tableData = [
