@@ -16,7 +16,6 @@
 		"allowImportingTsExtensions": false,
 		// Compiler config
 		"strict": false,
-		"checkJs": true,
 		"useDefineForClassFields" : true,
 		"allowSyntheticDefaultImports": true,
 		// ---

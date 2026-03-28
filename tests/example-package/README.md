@@ -2,8 +2,9 @@
 
 ## This is a test package for @reflex-stack/tsp, do not use it
 
-Main bundle is <picture style="display: inline-block"><source media="(prefers-color-scheme: dark)" srcset="./reports/main-dark.svg"><img src="./reports/main-light.svg"></picture>
-and optional submodule is only <picture style="display: inline-block"><source media="(prefers-color-scheme: dark)" srcset="./reports/submodule-dark.svg"><img src="./reports/submodule-light.svg"></picture>
+Main bundle is <bundle-size id="main">248</bundle-size>
+and optional submodule is only <bundle-size id="submodule">144</bundle-size>
+For a total of <bundle-size id="total">144</bundle-size>
 
 ## Install
 
