@@ -123,6 +123,8 @@ tmp/
 src/
 .github/
 docs/
+tests/
+bun.lock
 `
 
 const rootIndexTs = `// Root index file, export elements here

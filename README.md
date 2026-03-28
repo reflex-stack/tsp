@@ -1,15 +1,15 @@
 # TypeScript Package (tsp)
 
-**TypeScript Package** (tsp), scaffolds and build **Typescript** sources to **EcmaScript modules** and publish them as modular packages to **NPM** or **JSR**.
+TSP scaffolds and builds **Typescript** sources to **EcmaScript modules**, and helps to publish them as modular packages to **NPM** or **JSR**.
 
 **Features :**
 - It uses `tsc` to compile from ts to js and check errors
 - Generates `.d.ts` to keep types when used
-- Scaffold new packages in 1 minute
-- Testing lib pre-installed, can also use your own or skip tests (will use `bun:test` if the runtime is Bun)
-- Generating size report and replace them with tags in `README.md` for Npm and GitHub 
-- Compatible with latest **Node** / **Bun** / **Deno** and all bundlers with ecma specification
-- Publishing under `.js` and `.d.ts` [helps having better performances](https://x.com/mattpocockuk/status/1872945584761651432) in your projects.
+- Scaffolds new packages ready to be published in less than 1 minute
+- Testing lib pre-installed, can also use your own or skip tests (will use by default `bun:test` if the runtime is Bun)
+- Generating size reports and replace them with tags in `README.md` 
+- Compatible with the latest **Node** / **Bun** / **Deno**, and all bundlers with ecma specification
+- Publishing under `.js` and `.d.ts` [helps having better performances](https://x.com/mattpocockuk/status/1872945584761651432) in your projects
 
 Check example on [NPM](https://www.npmjs.com/package/@reflex-stack/tsp-bun-example) and [GitHub](https://github.com/reflex-stack/tsp/tree/main/tests/tsp-bun-example)
 
@@ -17,22 +17,21 @@ Check example on [NPM](https://www.npmjs.com/package/@reflex-stack/tsp-bun-examp
 
 First, create the associated **git repository** for your package and clone it (optional).
 
-Then, run this command in the cloned directory. :
-
-#### To create a package managed with Bun
+### To create a package managed with **Bun** :
 ```bash
 bunx @reflex-stack/tsp init
 ```
 
-#### To create a package managed with Node
+### To create a package managed with **Node** :
 ```bash
 npx @reflex-stack/tsp init
 ```
-> If you create this package in a mono-repo, `cd` in the correct repository before running this command. The subdirectory is important for package.json to be in the right place. 
+
+> If you create this new package in a mono-repo, `cd` in the correct repository before running this command. 
 
 #### Created files
 
-This will ask some questions and create those files. It contains 1 **submodule** example and a simple test implementation.
+This will ask some questions and create those files. It contains one **submodule** example and a simple test implementation.
 
 ```
 ├─ dist/

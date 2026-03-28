@@ -6,3 +6,5 @@ tmp/
 src/
 .github/
 docs/
+tests/
+bun.lock
