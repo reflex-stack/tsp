@@ -115,6 +115,7 @@ dist
 `
 
 const npmIgnoreTemplate = `.DS_Store
+.DS_Store
 .idea
 .vscode
 LICENSE
