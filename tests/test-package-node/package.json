@@ -30,7 +30,7 @@
   "scripts": {
     "build": "tsp build",
     "test": "tsp build --noSizeReport && tsp test --noIntro",
-    "publish": "tsp build && tsp test --noIntro && tsp publish --noIntro"
+    "bump": "tsp build && tsp test && tsp bump"
   },
   "dependencies": {
     "@reflex-stack/tsp": "0.2.0",

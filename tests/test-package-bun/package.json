@@ -1,6 +1,6 @@
 {
   "name": "@reflex-stack/tsp-bun-example",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "type": "module",
   "author": "Neo",
   "license": "MIT",
@@ -30,7 +30,7 @@
   "scripts": {
     "build": "tsp build",
     "test": "tsp build --noSizeReport && tsp test --noIntro",
-    "publish": "tsp build && tsp test --noIntro && tsp publish --noIntro"
+    "bump": "tsp build && tsp test && tsp bump"
   },
   "dependencies": {
     "@reflex-stack/tsp": "0.2.0",

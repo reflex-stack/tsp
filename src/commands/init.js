@@ -54,8 +54,8 @@ For a total of <bundle-size id="total">0b</bundle-size>
 - \`${runtime} run build\`
 ##### Test
 - \`${runtime} run test\`
-##### Publish
-- \`${runtime} run publish\`
+##### Bump version
+- \`${runtime} run bump\`
 
 ---
 ## TSP
@@ -274,7 +274,7 @@ export async function init () {
 		scripts: {
 			build: "tsp build",
 			test: "tsp build --noSizeReport && tsp test --noIntro",
-			publish: "tsp build && tsp test --noIntro && tsp publish --noIntro"
+			bump: "tsp build && tsp test && tsp bump"
 		},
 		dependencies: {
 			"@reflex-stack/tsp": options.tspVersion

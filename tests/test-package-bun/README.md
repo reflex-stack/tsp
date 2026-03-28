@@ -8,15 +8,15 @@ For a total of <bundle-size id="total">120b</bundle-size>
 
 ## Install
 
-`bun i @zouloux/test-package-2`
+`bun i @reflex-stack/tsp-bun-example`
 
 ## Usage
 
 ##### Main module
-- `import { ... } from "@zouloux/test-package-2"`
+- `import { ... } from "@reflex-stack/tsp-bun-example"`
 
 ##### Sub module
-- `import { ... } from "@zouloux/test-package-2/submodule"`
+- `import { ... } from "@reflex-stack/tsp-bun-example/submodule"`
 
 ## Build commands
 
@@ -24,8 +24,8 @@ For a total of <bundle-size id="total">120b</bundle-size>
 - `bun run build`
 ##### Test
 - `bun run test`
-##### Publish
-- `bun run publish`
+##### Bump version
+- `bun run bump`
 
 ---
 ## TSP

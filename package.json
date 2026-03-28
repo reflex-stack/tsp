@@ -1,6 +1,6 @@
 {
 	"name": "@reflex-stack/tsp",
-	"version": "0.2.0",
+	"version": "0.2.1",
 	"type": "module",
 	"bin": {
 		"tsp": "./src/cli.js"
@@ -13,7 +13,7 @@
 		"./tests": "./src/tests.js"
 	},
 	"scripts": {
-		"publish": "node ./src/cli.js publish"
+		"bump": "node ./src/cli.js bump"
 	},
 	"repository": {
 		"type": "git",

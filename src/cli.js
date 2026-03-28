@@ -17,7 +17,7 @@ const commands = new CLICommands({
 
 // Executed for all commands
 commands.before((args, flags, commandName) => {
-	if ( commandName !== "publish" && !flags.noIntro)
+	if ( commandName !== "bump" && !flags.noIntro )
 		showIntroMessage(!commandName || commandName === "init")
 })
 
@@ -50,10 +50,11 @@ commands.add("build", async (args, flags) => {
 		task.error()
 		console.log(error.stdout ?? '')
 		console.log(error.stderr ?? '')
+		process.exit(1)
 	})
 
 	// CLI Flag to disable reports and only build
-	if ( flags.noSizeReport )
+	if ( flags && flags.noSizeReport )
 		return
 
 	// Generate size report
@@ -158,25 +159,26 @@ commands.add("test", async (args, flags, commandName) => {
 })
 
 /**
- * PUBLISH COMMAND
+ * BUMP VERSION COMMAND
  */
-commands.add("publish", async (args, flags, commandName) => {
+commands.add("bump", async (args, flags, commandName) => {
 	// Check NPM connected user
-	await oraTask({text: `Connecting to npm`}, async task => {
-		try {
-			const whoami = await execAsync(`npm whoami`, 0)
-			task.success(nicePrint(`Hello {b/c}@${whoami}`, {output: 'return'}).trim())
-			return whoami
-		}
-		catch (e) {
-			task.error(`Please connect to npm with ${chalk.bold('npm login')}`)
-		}
-	})
+	// await oraTask({text: `Connecting to npm`}, async task => {
+	// 	try {
+	// 		const whoami = await execAsync(`npm whoami`, 0)
+	// 		task.success(nicePrint(`Hello {b/c}@${whoami}`, {output: 'return'}).trim())
+	// 		return whoami
+	// 	}
+	// 	catch (e) {
+	// 		task.error(`Please connect to npm with ${chalk.bold('npm login')}`)
+	// 	}
+	// })
 	// TODO : When test will build only needed files, move build after tests
 	//  (to build all files after test has succeed)
 	// Compile
-	//await CLICommands.run(`build`, cliArguments, cliOptions)
-	//await CLICommands.run(`test`, cliArguments, cliOptions)
+	// await commands.run("build")
+	// await commands.run("test")
+
 
 	// todo : Internal build
 	// todo : Run test command
@@ -192,42 +194,33 @@ commands.add("publish", async (args, flags, commandName) => {
 	newLine()
 	nicePrint(`📦 Current version of {b/c}${name}{/} is {b/c}${version}`)
 	// Ask how to increment version
-	const increment = await askList(`How to increment ?`, {
+	const increment = await askList(`How to bump version ?`, {
 		patch: 'patch (0.0.X) - No new features, patch bugs or optimize code',
 		minor: 'minor (0.X.0) - No breaking change, have new or improved features',
 		major: 'major (X.0.0) - Breaking change',
-		// Keep but publish on NPM (if already increment in package.json)
-		keep: `keep (${ version }) - Publish current package.json version`,
-		// Push on git but no lib publish
-		push: `push - Push on git only, no npm publish`,
-		// Skip this lib (no publish at all, go to next library)
-		skip: `skip - Do not publish ${ name }`,
 	}, { returnType: 'key' });
-	// Go to next library
-	if ( increment === 'skip' )
-		return
-	// execSync(`git status -s`, stdioLevel, libraryExecOptions)
-	// Ask for commit message
-	let message = await askInput(`Commit message ?`);
+	// Ask for tag message
+	let message = await askInput(`Tag message`);
 	message = message.replace(/["']/g, "'");
-	// If we increment, use npm version
+	// // If we increment, use npm version
 	if ( increment !== 'keep' && increment !== 'push' ) {
 		version = execSync(`npm version ${increment} --no-git-tag-version -m"${name} - %s - ${message}"`, stdioLevel, libraryExecOptions).toString().trim();
 	}
 	// Add to git and push
-	execSync(`git add .`, stdioLevel, libraryExecOptions);
-	execSync(`git commit -m"${name} - ${version} : ${message}"`, stdioLevel, libraryExecOptions);
-	execSync(`git push`, stdioLevel, libraryExecOptions);
-	// Publish on npm as public
-	// FIXME : Access public as an option for private repositories
-	// Ingore script to avoid infinite loop (if "package.json.scripts.publish" == "tsbundle publish")
-	if ( increment !== 'push' ) {
-		execSync(`npm publish --access public --ignore-scripts`, stdioLevel, libraryExecOptions);
-		nicePrint(`👌 {b/g}${name}{/}{g} Published, new version is {b/g}${version}`)
-	}
-	else {
-		nicePrint(`👍 {b/g}${name}{/}{g} Pushed to git`)
-	}
+	// execSync(`git add .`, stdioLevel, libraryExecOptions);
+	// let prefix = ""
+	// if ( increment === 'patch' )
+	// 	prefix = "fix:"
+	// else if ( increment === 'minor' )
+	// 	prefix = "feat:"
+	// else if ( increment === 'major' )
+	// 	prefix = "major:"
+	// execSync(`git commit -m"${prefix}:${name} - ${version} : ${message}"`, stdioLevel, libraryExecOptions);
+	// execSync(`git push`, stdioLevel, libraryExecOptions);
+	// Ask to publish
+	// fixme : should have public or private setting in config
+	const packageManager = typeof Bun === "undefined" ? "npm" : "bun"
+	nicePrint(`Please run {b/c}${packageManager} publish --access public{/} to publish this library on NPM as a public package.`)
 })
 
 

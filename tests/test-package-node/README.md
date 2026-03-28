@@ -8,15 +8,15 @@ For a total of <bundle-size id="total">392b</bundle-size>
 
 ## Install
 
-`npm i @reflex-stack/tsp-example`
+`npm i @reflex-stack/tsp-node-example`
 
 ## Usage
 
 ##### Main module
-- `import { ... } from "{{ packageNPMName }}"`
+- `import { ... } from "@reflex-stack/tsp-node-example"`
 
 ##### Sub module
-- `import { ... } from "{{ packageNPMName }}/submodule"`
+- `import { ... } from "@reflex-stack/tsp-node-example/submodule"`
 
 ## Build commands
 
@@ -24,8 +24,8 @@ For a total of <bundle-size id="total">392b</bundle-size>
 - `npm run build`
 ##### Test
 - `npm run test`
-##### Publish
-- `npm run publish`
+##### Bump version
+- `npm run bump`
 
 ---
 ## TSP

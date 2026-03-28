@@ -72,15 +72,15 @@ npm run test
 ```
 > Will clear `./dist`, build sources and run tests. No size report.
 
-#### Publish
+#### Bump version
 ```bash
-bun run publish
+bun run bump
 # or
-npm run publish
+npm run bump
 ```
 
-> Will clear `./dist`, build sources, run tests, and start publish process.
-> This will ask you how to upgrade package.json version, push to git and npm.
+> Will clear `./dist`, build sources, run tests, and create a new package version.
+> You will be able to run `npm publish --access public` or `bun publish --access public` safely after that.
 
 
 ## Size report
