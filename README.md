@@ -56,17 +56,21 @@ This will ask some questions and create those files. It contains one **submodule
 #### Build sources
 ```shell
 bun run build
-# or
+```
+or
+```bash
 npm run build
 ```
 - Will clear `./dist`, build sources from `.ts` files to `.js` and `.d.ts` files.
 
-> Run `npm run build --noSizeReport` to skip size report entirely.
+> Run with `--noSizeReport` to skip bundle size reporting.
 
 #### Test
 ```bash
 bun run test
-# or
+```
+or
+```bash
 npm run test
 ```
 > Will clear `./dist`, build sources and run tests. No size report.
@@ -74,13 +78,14 @@ npm run test
 #### Bump version
 ```bash
 bun run bump
-# or
+```
+or
+```bash
 npm run bump
 ```
 
 > Will clear `./dist`, build sources, run tests, and create a new package version.
 > You will be able to run `npm publish --access public` or `bun publish --access public` safely after that.
-
 
 ## Size report
 
