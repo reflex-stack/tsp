@@ -2,7 +2,4 @@
 .idea
 .vscode
 LICENSE
-tmp/
-src/
-.github/
-docs/
+tests
