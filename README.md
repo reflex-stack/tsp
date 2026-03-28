@@ -6,23 +6,29 @@
 - It uses `tsc` to compile from ts to js and check errors
 - Generates `.d.ts` to keep types when used
 - Scaffold new packages in 1 minute
-- Testing lib pre-installed, can also use your own or skip tests
-- Generating size report as SVG for **README.md** inclusion ( ex : <picture style="display: inline-block"><source media="(prefers-color-scheme: dark)" srcset="./tests/example-package/reports/main-dark.svg"><img src="./tests/example-package/reports/main-light.svg"></picture> ) 
+- Testing lib pre-installed, can also use your own or skip tests (will use `bun:test` if the runtime is Bun)
+- Generating size report and replace them with tags in `README.md` for Npm and GitHub 
 - Compatible with latest **Node** / **Bun** / **Deno** and all bundlers with ecma specification
-- Publishing under `.js` and `.d.ts` [helps having better performances](https://x.com/mattpocockuk/status/1872945584761651432) in your projects ( typescript is faster ), event if **Bun** or **Deno** support Typescript by default.
+- Publishing under `.js` and `.d.ts` [helps having better performances](https://x.com/mattpocockuk/status/1872945584761651432) in your projects.
 
-Check example on [NPM](https://www.npmjs.com/package/@reflex-stack/tsp-example) and [GitHub](https://github.com/reflex-stack/tsp/tree/main/tests/example-package)
+Check example on [NPM](https://www.npmjs.com/package/@reflex-stack/tsp-bun-example) and [GitHub](https://github.com/reflex-stack/tsp/tree/main/tests/tsp-bun-example)
 
 ## Init a new TypeScript Package
 
-First, create the associated **git repository** for your package and clone it ( optional ).
+First, create the associated **git repository** for your package and clone it (optional).
 
 Then, run this command in the cloned directory. :
+
+#### To create a package managed with Bun
+```bash
+bunx @reflex-stack/tsp init
+```
+
+#### To create a package managed with Node
 ```bash
 npx @reflex-stack/tsp init
 ```
-
-> If you create this package in a mono-repo, `cd` in the correct repository before running this command. The subdirectory is important for package.json and size report generation. 
+> If you create this package in a mono-repo, `cd` in the correct repository before running this command. The subdirectory is important for package.json to be in the right place. 
 
 #### Created files
 
@@ -35,11 +41,11 @@ This will ask some questions and create those files. It contains 1 **submodule**
 │  │  └─ index.ts
 │  └─ index.ts
 ├─ tests/
-│  └─ test.js
-│  └─ tsconfig.json ( to have correct typings in test.js )
+│  └─ test.(js|ts)
+│  └─ tsconfig.json (if Node runtime, to have correct typings in test.js)
 ├─ .gitignore
 ├─ .npmignore
-├─ LICENSE ( if MIT )
+├─ LICENSE (if MIT)
 ├─ package.json
 ├─ package-lock.json
 ├─ README.md
@@ -50,56 +56,46 @@ This will ask some questions and create those files. It contains 1 **submodule**
 
 #### Build sources
 ```shell
+bun run build
+# or
 npm run build
 ```
 - Will clear `./dist`, build sources from `.ts` files to `.js` and `.d.ts` files.
-- Will generate size report and generate `./reports` directory with JSON and SVG files.
 
 > Run `npm run build --noSizeReport` to skip size report entirely.
 
 #### Test
 ```bash
+bun run test
+# or
 npm run test
 ```
 > Will clear `./dist`, build sources and run tests. No size report.
 
 #### Publish
 ```bash
+bun run publish
+# or
 npm run publish
 ```
+
 > Will clear `./dist`, build sources, run tests, and start publish process.
 > This will ask you how to upgrade package.json version, push to git and npm.
 
 
 ## Size report
 
-**TSP** can generate size reports with brotli compression. It generate :
-- 2 svgs for root module
-- 2 svgs by submodule
-- 2 svgs for total if you have submodules
+**TSP** can generate size reports with brotli compression.
 
-There are 2 svgs generated, for dark and light mode, to be included in the README.md, on **GitHub** and **NPM**.
+Use `<bundle-size id="{bundleID}">0b</bundle-size>` tags in your `README.md` to include size reports.
+Replace `{bundleID}` with the name of the bundle you want to include.
+Those tags will be replaced each time you run `npm run build`.
 
-> When scaffolded, an example of SVG inclusion is generated in README.md
+For the total bundle size, use `<bundle-size id="total">0b</bundle-size>`
 
-How to include the size report in `README.md` ?
+> Works in GitHub and NPM.
 
-```html
-Main bundle is <picture style="display: inline-block"><source media="(prefers-color-scheme: dark)" srcset="./reports/main-dark.svg"><img src="./reports/main-light.svg"></picture>,
-submodule is <picture style="display: inline-block"><source media="(prefers-color-scheme: dark)" srcset="./reports/submodule-dark.svg"><img src="./reports/submodule-light.svg"></picture>,
-total is <picture style="display: inline-block"><source media="(prefers-color-scheme: dark)" srcset="./reports/total-dark.svg"><img src="./reports/total-light.svg"></picture>
-```
-
-Which renders to 
-
-Main bundle is <picture style="display: inline-block"><source media="(prefers-color-scheme: dark)" srcset="./tests/example-package/reports/main-dark.svg"><img src="./tests/example-package/reports/main-light.svg"></picture>,
-submodule is <picture style="display: inline-block"><source media="(prefers-color-scheme: dark)" srcset="./tests/example-package/reports/submodule-dark.svg"><img src="./tests/example-package/reports/submodule-light.svg"></picture>,
-total is <picture style="display: inline-block"><source media="(prefers-color-scheme: dark)" srcset="./tests/example-package/reports/total-dark.svg"><img src="./tests/example-package/reports/total-light.svg"></picture>
-
-> Those works in GitHub and NPM.
-> This can be disabled in package.json at `tsp.generate-svg-report`
-
-**TSP** can also generate a json size report if needed ( default is set to false )
+**TSP** can also generate a json size report as `bundle-sizes.json` if needed (default is set to false)
 
 ## TSP config
 TSP config is in the generated `package.json` under the `"tsp"` node
@@ -107,22 +103,21 @@ TSP config is in the generated `package.json` under the `"tsp"` node
 ```json5
 {
   "tsp": {
-	// Can set to "bun" or "deno" 
-	"runtime": "node",
+	// Can set to "node" or "deno" 
+	"runtime": "bun",
 	// If you change them, you should update tsconfig.json file
 	"src": './src',
 	"dist": './dist',
 	"tests": './tests',
 	"tmp": './tmp',
 	// Add your test files here
-	"test-files": ['test.js'],
+	"test-files": ['test.ts'],
 	// Where size reports are generated
-	"reports": './reports',
-	"generate-json-report": false,
-	"generate-svg-report": true
+	"generate-json-report": false
   },
 }
 ```
 
 ## Next features
-- [ ] docisfy integration
+- [ ] Set other files than `README.md` in config for size report tags
+- [ ] Docisfy integration

@@ -1,0 +1,45 @@
+{
+  "name": "@reflex-stack/tsp-bun-example",
+  "version": "0.1.0",
+  "type": "module",
+  "author": "Neo",
+  "license": "MIT",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./submodule": {
+      "types": "./dist/submodule/index.d.ts",
+      "default": "./dist/submodule/index.js"
+    }
+  },
+  "tsp": {
+    "runtime": "bun",
+    "src": "./src",
+    "dist": "./dist",
+    "tests": "./tests",
+    "test-files": [
+      "test.ts"
+    ],
+    "tmp": "./tmp",
+    "generate-json-report": false
+  },
+  "scripts": {
+    "build": "tsp build",
+    "test": "tsp build --noSizeReport && tsp test --noIntro",
+    "publish": "tsp build && tsp test --noIntro && tsp publish --noIntro"
+  },
+  "dependencies": {
+    "@reflex-stack/tsp": "0.2.0",
+    "terser": "^5.46.1",
+    "typescript": "^6.0.2"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:reflex-stack/tsp.git",
+    "directory": "tests/test-package-bun"
+  }
+}

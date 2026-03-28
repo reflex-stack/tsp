@@ -140,7 +140,11 @@ commands.add("test", async (args, flags, commandName) => {
 	nicePrint(`Starting test sequence`)
 	newLine()
 	for ( const testFile of config["test-files"] ) {
-		const command = `${config.runtime} ${config.tests}/${testFile}`
+		const command = (
+			config.runtime === "node"
+			? `node ${config.tests}/${testFile}`
+			: `bun test ${config.tests}/${testFile}`
+		)
 		nicePrint(`{d}$ ${command}`)
 		try {
 			await execAsync(command, 3)
@@ -233,8 +237,10 @@ commands.add("publish", async (args, flags, commandName) => {
 commands.start(function (commandName) {
 	if ( commandName )
 		return
-	nicePrint(`{b/r}Command '${commandName}' not found`)
-	newLine()
+	if ( commandName !== undefined ) {
+		nicePrint(`{b/r}Command '${commandName}' not found`)
+		newLine()
+	}
 	nicePrint(`Available commands :`)
 	commands.list().forEach( command => nicePrint(`- ${command}`) )
 })

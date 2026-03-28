@@ -9,9 +9,7 @@ export let getConfig = (userPackage) => {
 		tests: './tests',
 		"test-files": ['test.js'],
 		tmp: './tmp',
-		reports: './reports',
 		'generate-json-report': true,
-		'generate-svg-report': true,
 		// Override with package config
 		...((userPackage ?? {})['tsp'] ?? {})
 	}

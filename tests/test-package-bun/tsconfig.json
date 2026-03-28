@@ -15,7 +15,7 @@
 		"isolatedModules": false,
 		"allowImportingTsExtensions": false,
 		// Compiler config
-		"strict": false,
+		"strict": true,
 		"useDefineForClassFields" : true,
 		"allowSyntheticDefaultImports": true,
 		// ---

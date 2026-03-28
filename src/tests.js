@@ -1,5 +1,4 @@
 
-
 let total = 0
 let success = 0
 let failed = 0
@@ -14,14 +13,12 @@ export function startTest () {
 	}
 }
 
-
-
 export const describe = ( name, fn ) => {
 	console.log(`${ name }`)
 	fn()
 }
 
-export const it = ( name, fn ) => {
+export const test = ( name, fn ) => {
 	++total
 	try {
 		fn()

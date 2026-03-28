@@ -2,21 +2,21 @@
 import { rootDep, doStuff } from "../dist/index.js"
 import { doSubmoduleStuff } from "../dist/submodule/index.js"
 // Import small testing lib from tsp
-import { describe, it, expect, startTest } from "@reflex-stack/tsp/tests"
+import { describe, test, expect, startTest } from "@reflex-stack/tsp/tests"
 
 const endTest = startTest()
 
 describe("Main module", () => {
-	it("Should has root dependency", () => {
+	test("Should has root dependency", () => {
 		expect(rootDep).toBe("root dependency")
 	})
-	it("Should call doStuff", () => {
+	test("Should call doStuff", () => {
 		expect(doStuff()).toBe("Do stuff common dependency")
 	})
 })
 
 describe("Sub module", () => {
-	it("Should call doSubmoduleStuff", () => {
+	test("Should call doSubmoduleStuff", () => {
 		const subModuleStuff = doSubmoduleStuff()
 		expect(subModuleStuff).toBe("Do submodule stuff submodule dependency common dependency")
 	})

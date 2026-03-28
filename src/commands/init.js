@@ -141,7 +141,7 @@ export function subRandomFunction () {
 }
 `
 
-const testFile = `// If you have no tests, uncomment this
+const testFileNode = `// If you have no tests, uncomment this
 // console.log("No test implemented.")
 // process.exit(0)
 
@@ -149,29 +149,58 @@ const testFile = `// If you have no tests, uncomment this
 import { randomFunction } from "../dist/index.js"
 import { subRandomFunction } from "../dist/submodule/index.js"
 // Import small testing lib from tsp
-import { describe, it, expect, startTest } from "@reflex-stack/tsp/tests"
+import { describe, test, expect, startTest } from "@reflex-stack/tsp/tests"
 
 const endTest = startTest()
 
 describe("Main module", () => {
-	it("Should call random", () => {
+	test("Should call random", () => {
 		const rootResult = randomFunction()
 		expect(rootResult).toBe(5)
 	})
 })
 
 describe("Sub module", () => {
-	it("Should call sub random", () => {
+	test("Should call sub random", () => {
 		const subResult = subRandomFunction()
 		expect(subResult).toBe(60)
 	})
 	// Test error example
-	// it("Should fail", () => {
+	// test("Should fail", () => {
 	// 	expect(5).toBe(12)
 	// })
 })
 
 endTest()
+`
+
+const testFileBun = `// If you have no tests, uncomment this
+// console.log("No test implemented.")
+// process.exit(0)
+
+// Import your code directly from src directory thanks to bun
+import { randomFunction } from "../src/index.js"
+import { subRandomFunction } from "../src/submodule/index.js"
+// Import Bun testing lib
+import { describe, test, expect } from "bun:test"
+
+describe("Main module", () => {
+	test("Should call random", () => {
+		const rootResult = randomFunction()
+		expect(rootResult).toBe(5)
+	})
+})
+
+describe("Sub module", () => {
+	test("Should call sub random", () => {
+		const subResult = subRandomFunction()
+		expect(subResult).toBe(60)
+	})
+	// Test error example
+	// test("Should fail", () => {
+	// 	expect(5).toBe(12)
+	// })
+})
 `
 
 export async function init () {
@@ -195,6 +224,7 @@ export async function init () {
 			nicePrint(`{d}Git sub directory is {/}${relativeGitSubDirectory}. This will be saved to package.json.`)
 		}
 	}
+	nicePrint(`{d}Using {b}${runtime}{/}{d} runtime. Your package will be configured to work with {b}${runtime}{/}{d}.`)
 	newLine()
 	const options = { remoteURL, relativeGitSubDirectory }
 	options.packageTextName = await askInput(`Package name, in plain text {d}ex : My Package`, { notEmpty: true })
@@ -236,7 +266,7 @@ export async function init () {
 			src: './src',
 			dist: './dist',
 			tests: './tests',
-			"test-files": ['test.js'],
+			"test-files": [runtime === "node" ? 'test.js' : 'test.ts'],
 			tmp: './tmp',
 			"generate-json-report": options.jsonReport
 		},
@@ -255,7 +285,7 @@ export async function init () {
 			type: "git",
 			url: options.remoteURL
 		}
-		// Add subdirectory for package.json and SVG targeting in README.md on NPMJs
+		// Add subdirectory for package.json and in README.md on NPMJs
 		if ( options.relativeGitSubDirectory ) {
 			packageJson.repository.directory = options.relativeGitSubDirectory
 		}
@@ -278,11 +308,15 @@ export async function init () {
 	writeFileSync(join(config.src, "index.ts"), Stach(rootIndexTs, options))
 	writeFileSync(join(config.src, "submodule", "index.ts"), Stach(subModuleIndexTs, options))
 	// Generate tests file
-	writeFileSync(join(config.tests, "test.js"), Stach(testFile, options))
-	writeFileSync(join(config.tests, "tsconfig.json"), Stach(tsconfigTestTemplate, options))
+	if ( runtime === "node" ) {
+		writeFileSync(join(config.tests, "test.js"), Stach(testFileNode, options))
+		writeFileSync(join(config.tests, "tsconfig.json"), Stach(tsconfigTestTemplate, options))
+	} else if ( runtime === "bun" ) {
+		writeFileSync(join(config.tests, "test.ts"), Stach(testFileBun, options))
+	}
 	// Install dependencies
 	await oraTask("Installing dependencies", async () => {
-		await execAsync(`npm i typescript terser`, false, { cwd: config.cwd })
+		await execAsync(`${packageManager} i typescript terser`, false, { cwd: config.cwd })
 	})
 	// Show commands
 	newLine()
